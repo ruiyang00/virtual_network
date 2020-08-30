@@ -1,12 +1,25 @@
 import socket
+# create a socket object
+serversocket = socket.socket(
+	        socket.AF_INET, socket.SOCK_STREAM) 
 
-UDP_IP = "127.0.0.1"
-UDP_PORT = 8080;
+# get local machine name
+host = socket.gethostname()                           
 
-sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+port = 9999                                           
 
-sock.bind((UDP_IP, UDP_PORT))
+# bind to the port
+serversocket.bind((host, port))                                  
+
+# queue up to 5 requests
+serversocket.listen(5)                                           
 
 while True:
-    data, addr = sock.recvfrom(1024)
-    print("received message: %s" % data)
+   # establish a connection
+   clientsocket,addr = serversocket.accept()      
+
+   print("Got a connection from %s" % str(addr))
+    
+   msg = 'Thank you for connecting'+ "\r\n"
+   clientsocket.send(msg.encode('ascii'))
+   clientsocket.close()

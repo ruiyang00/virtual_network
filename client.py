@@ -1,9 +1,19 @@
 import socket
 
-UDP_IP = "35.161.72.250"
-UDP_PORT = 8080
 
-while True:
-    message = intput("Enter your message: ")
-    sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-    sock.sendto(message, (UDP_IP, UDP_PORT))
+# create a socket object
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+
+# get local machine name
+host = socket.gethostname()                           
+
+port = 9999
+
+# connection to hostname on the port.
+s.connect((host, port))                               
+
+# Receive no more than 1024 bytes
+msg = s.recv(1024)                                     
+
+s.close()
+print (msg.decode('ascii'))
