@@ -2,18 +2,15 @@ import socket
 
 
 # create a socket object
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+UDP_CLIENT = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
 
 # get local machine name
-host = socket.gethostname()                           
+server_info = ("127.0.0.1", 9999)
+MESSAGE = b"hello"
+BUFFER_SIZE = 1024
 
-port = 9999
 
-# connection to hostname on the port.
-s.connect((host, port))                               
+UDP_CLIENT.sendto(MESSAGE, server_info)
+msg = UDP_CLIENT.recvfrom(BUFFER_SIZE)
+print(msg[0].decode())
 
-# Receive no more than 1024 bytes
-msg = s.recv(1024)                                     
-
-s.close()
-print (msg.decode('ascii'))
